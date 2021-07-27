@@ -7,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Optional;
-
 @Controller
 @RequestMapping("${openapi.mancalaGame.base-path:}")
 public class PlayGameApiController implements PlayGameApi {
@@ -20,7 +18,7 @@ public class PlayGameApiController implements PlayGameApi {
     }
 
     @Override
-    public ResponseEntity<MancalaBoard> playGame(Integer pit, Optional<String> gameId) throws MancalaBaseException {
-        return ResponseEntity.ok(mancalaGameService.playGame(pit, gameId.orElse(null)));
+    public ResponseEntity<MancalaBoard> playGame(Integer pit, String gameId) throws MancalaBaseException {
+        return ResponseEntity.ok(mancalaGameService.playGame(pit, gameId));
     }
 }

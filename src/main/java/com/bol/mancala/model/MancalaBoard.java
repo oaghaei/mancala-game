@@ -21,13 +21,10 @@ import static com.bol.mancala.constant.MancalaConstant.*;
 public class MancalaBoard {
 
     @Id
-    @JsonProperty("gameId")
     private String gameId;
 
-    @JsonProperty("playerTurn")
     private Integer playerTurn;
 
-    @JsonProperty("pits")
     @Valid
     private List<MancalaPit> pits = null;
 
@@ -130,10 +127,8 @@ public class MancalaBoard {
      *
      * @return pits
      */
-    @ApiModelProperty(value = "")
-
+    @ApiModelProperty(value = "pits")
     @Valid
-
     public List<MancalaPit> getPits() {
         return pits;
     }

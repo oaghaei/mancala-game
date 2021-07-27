@@ -39,31 +39,8 @@ public interface PlayGameApi {
     default ResponseEntity<MancalaBoard> playGame(@ApiParam(value = "pit number that user choose", required = true, example = "1")
                                                       @PathVariable("pit") Integer pit,
                                                   @ApiParam(value = "Id of the game to update", example = "6279061a-2bf6-40a6-88f9-a249b4c4eca5")
-                                                  @PathVariable("gameId") Optional<String> gameId
+                                                  @PathVariable(value = "gameId", required = false) String gameId
                                                   ) throws MancalaBaseException {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
-
-//    /**
-//     * PUT /paly/{pit} : Play game by click on a pit
-//     * Update an already game. gameId specify the game and pit specify the pit number that user choose
-//     *
-//     * @param pit pit number that user choose (required)
-//     * @return Game updated (status code 200)
-//     */
-//    @ApiOperation(value = "Play game by click on a pit", nickname = "playGame",
-//            notes = "Update an already game. gameId specify the game and pit specify the pit number that user choose",
-//            response = MancalaBoard.class, tags = {})
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "Game updated", response = MancalaBoard.class)})
-//    @PutMapping(
-//            value = "/play/{pit}",
-//            produces = {"application/json"}
-//    )
-//    default ResponseEntity<MancalaBoard> playGame(@ApiParam(value = "pit number that user choose", required = true, example = "1")
-//                                                  @PathVariable("pit") Integer pit) throws MancalaBaseException {
-//        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-//    }
-
-
 }
