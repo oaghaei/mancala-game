@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mancala Game</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/custom.js"></script>
+</head>
+<body>
+
+<div>
+    <div>
+        <div class="col-sm-12 col-md-12">
+            <div class="wpb_text_column wpb_content_element ">
+                <div class="wpb_wrapper">
+                    <div class="title-h1 text-center"><span>Mancala Game</span></div>
+                </div>
+            </div>
+        </div>
+
+        <table cellpadding="0" cellspacing="0" align="center">
+            <tr>
+                <td>
+                    <div class="man-column">
+                        <div class="man-box-row">
+                            <div class="man-box-wrapper">
+                                <div class="man-price">
+                                    <div class="man-cost" id="pit7">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div style="min-width: 840px; height: 290px; background-color: rgba(71, 71, 72, 0.2);padding: 20px">
+                        <table style="height: 100%;width: 100%">
+                            <tr>
+                                <td colspan="2">
+                                    <div class="man-box-small man-box-small-shadow">
+                                        <div class="man-cost" id="pit6" onclick="play(6)">6</div>
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <div class="man-box-small man-box-small-shadow">
+                                        <div class="man-cost" id="pit5" onclick="play(5)">6</div>
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <div class="man-box-small man-box-small-shadow">
+                                        <div class="man-cost" id="pit4" onclick="play(4)">6</div>
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <div class="man-box-small man-box-small-shadow">
+                                        <div class="man-cost" id="pit3" onclick="play(3)">6</div>
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <div class="man-box-small man-box-small-shadow">
+                                        <div class="man-cost" id="pit2" onclick="play(2)">6</div>
+                                    </div>
+                                </td>
+                                <td colspan="2">
+                                    <div class="man-box-small man-box-small-shadow">
+                                        <div class="man-cost" id="pit1" onclick="play(1)">6</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 30px"></td>
+                                <td>
+                                    <div class="man-box-small man-box-orange-small man-box-orange-small-shadow">
+                                        <div class="man-cost" id="pit8" onclick="play(8)">6</div>
+                                    </div>
+                                </td>
+                                <td style=" width: 30px"></td>
+
+                                <td>
+                                    <div class="man-box-small man-box-orange-small man-box-orange-small-shadow">
+                                        <div class="man-cost" id="pit9" onclick="play(9)">6</div>
+                                    </div>
+                                </td>
+                                <td style="width: 30px"></td>
+
+                                <td>
+                                    <div class="man-box-small man-box-orange-small man-box-orange-small-shadow">
+                                        <div class="man-cost" id="pit10" onclick="play(10)">6</div>
+                                    </div>
+                                </td>
+                                <td style="width: 30px"></td>
+
+                                <td>
+                                    <div class="man-box-small man-box-orange-small man-box-orange-small-shadow">
+                                        <div class="man-cost" id="pit11" onclick="play(11)">6</div>
+                                    </div>
+                                </td>
+                                <td style="width: 30px"></td>
+
+                                <td>
+                                    <div class="man-box-small man-box-orange-small man-box-orange-small-shadow">
+                                        <div class="man-cost" id="pit12" onclick="play(12)">6</div>
+                                    </div>
+                                </td>
+                                <td style="width: 30px"></td>
+                                <td>
+                                    <div class="man-box-small man-box-orange-small man-box-orange-small-shadow">
+                                        <div class="man-cost" id="pit13" onclick="play(13)">6</div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </td>
+                <td>
+                    <div class="man-column">
+                        <div class="man-box-row">
+                            <div class="man-box-wrapper-right">
+                                <div class="man-price man-box-orange">
+                                    <div class="man-cost" id="pit14">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+        </table>
+
+    </div>
+</div>
+</body>
+</html>
