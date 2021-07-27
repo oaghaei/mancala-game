@@ -13,9 +13,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.Arrays;
-import java.util.List;
-
+import static com.bol.mancala.constant.MancalaBoardTestCase.TEST_CASE_WINNER_1;
+import static com.bol.mancala.constant.MancalaBoardTestCase.TEST_CASE_WINNER_2;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -26,27 +25,42 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext
 class MancalaGameApiTest {
 
-    private static final List<Integer> TEST_CASE =
-            Arrays.asList(2, 8, 1, 13, 6, 13, 12, 4, 13, 12, 2, 8, 6, 5, 13, 11, 6, 10, 5, 13, 12, 4);
-
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
-    void testPlayGame() throws Exception {
+    void playGameToEnd() throws Exception {
         MvcResult result = mockMvc.perform(put("/play/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
         MancalaBoardDto actualMancalaBoardDto =
                 objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
-        for (Integer pitId : TEST_CASE) {
+        for (Integer pitId : TEST_CASE_WINNER_1) {
             result = mockMvc.perform(put("/play/" + pitId + "/" + actualMancalaBoardDto.getGameId()))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
         }
         System.out.println(objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class));
     }
+
+    @Test
+    void playGameToEnd2() throws Exception {
+        MvcResult result = mockMvc.perform(put("/play/8"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        MancalaBoardDto actualMancalaBoardDto =
+                objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
+        for (Integer pitId : TEST_CASE_WINNER_2) {
+            result = mockMvc.perform(put("/play/" + pitId + "/" + actualMancalaBoardDto.getGameId()))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
+        }
+        System.out.println(objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class));
+    }
+
+
 }
