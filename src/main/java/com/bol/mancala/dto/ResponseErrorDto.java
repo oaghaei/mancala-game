@@ -1,7 +1,6 @@
 package com.bol.mancala.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 import java.time.LocalDateTime;
@@ -13,11 +12,8 @@ import java.time.LocalDateTime;
         "timestamp"
 })
 public class ResponseErrorDto {
-    @JsonProperty("code")
     private String code;
-    @JsonProperty("message")
     private String message;
-    @JsonProperty("timestamp")
     private LocalDateTime dateTime;
 
     public ResponseErrorDto(String code, String message, LocalDateTime dateTime) {

@@ -64,4 +64,3 @@ components:
           description: 'Stone count in a pit'
           type: integer
           format: int64
-

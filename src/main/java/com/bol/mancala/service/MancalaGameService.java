@@ -7,8 +7,11 @@ import com.bol.mancala.model.MancalaBoard;
 import com.bol.mancala.model.MancalaPit;
 import com.bol.mancala.model.Player;
 import com.bol.mancala.repository.MancalaBoardRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
@@ -18,6 +21,7 @@ import static com.bol.mancala.constant.MancalaConstant.RIGHT_MAIN_PIT_ID;
 
 @Service
 public class MancalaGameService {
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final MancalaBoardRepository repository;
 
@@ -32,6 +36,7 @@ public class MancalaGameService {
                     defaultPits().
                     gameId(UUID.randomUUID().toString()).
                     withPlayerTurnBySelectedPitId(pitId);
+            logger.info("Game [{}] starts at [{}]", mancalaBoard.getGameId(), LocalDateTime.now());
         } else {
             Optional<MancalaBoard> mancalaBoardOpt = repository.findById(gameId);
             mancalaBoard = mancalaBoardOpt.orElseThrow(GameIdNotFoundException::new);

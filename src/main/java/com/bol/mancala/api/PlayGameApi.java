@@ -5,6 +5,7 @@
  */
 package com.bol.mancala.api;
 
+import com.bol.mancala.dto.MancalaBoardDto;
 import com.bol.mancala.exception.MancalaBaseException;
 import com.bol.mancala.model.MancalaBoard;
 import io.swagger.annotations.*;
@@ -14,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 
-import java.util.Optional;
 
 @Validated
 @Api(value = "play")
@@ -36,9 +36,9 @@ public interface PlayGameApi {
             value = {"/play/{pit}/{gameId}", "/play/{pit}" },
             produces = {"application/json"}
     )
-    default ResponseEntity<MancalaBoard> playGame(@ApiParam(value = "pit number that user choose", required = true, example = "1")
+    default ResponseEntity<MancalaBoardDto> playGame(@ApiParam(value = "pit number that user choose", required = true, example = "1")
                                                       @PathVariable("pit") Integer pit,
-                                                  @ApiParam(value = "Id of the game to update", example = "6279061a-2bf6-40a6-88f9-a249b4c4eca5")
+                                                     @ApiParam(value = "Id of the game to update", example = "6279061a-2bf6-40a6-88f9-a249b4c4eca5")
                                                   @PathVariable(value = "gameId", required = false) String gameId
                                                   ) throws MancalaBaseException {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
