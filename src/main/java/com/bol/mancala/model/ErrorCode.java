@@ -1,8 +1,8 @@
 package com.bol.mancala.model;
 
 public enum ErrorCode {
-    GAME_ID_NOT_FOUND("400", "game not found"),
-    INTERNAL_SERVER_ERROR("500", "internal server error");
+    INTERNAL_SERVER_ERROR("001", "internal server error"),
+    GAME_ID_NOT_FOUND("002", "game not found");
 
     private final String code;
     private final String message;
