@@ -1,0 +1,67 @@
+openapi: 3.0.3
+
+info:
+  version: 1.0.0
+  title: Mancala Game API
+  description: Api for building Mancala game
+
+servers:
+  - url: http://localhost:8080
+
+paths:
+  '/play/{pit}/{gameId}':
+    put:
+      summary: 'Play game by click on a pit'
+      description: 'Update an already game. gameId specify the game and pit specify the pit number that user choose'
+      operationId: playGame
+      parameters:
+        - in: path
+          name: gameId
+          description: 'Id of the game to update'
+          required: true
+          schema:
+            type: string
+        - in: path
+          name: pit
+          description: 'pit number that user choose'
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: 'Game updated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MancalaBoard'
+components:
+  schemas:
+    GameId:
+      description: 'Game Identifier'
+      type: string
+    MancalaBoard:
+      type: object
+      properties:
+        gameId:
+          $ref: '#/components/schemas/GameId'
+        playerTurn:
+          description: 'Player turn'
+          type: integer
+          format: int64
+        pits:
+          type: array
+          items:
+            $ref: '#/components/schemas/MancalaPit'
+    MancalaPit:
+      type: object
+      properties:
+        id:
+          description: 'Pit identifier'
+          type: integer
+          format: int64
+        stoneCount:
+          description: 'Stone count in a pit'
+          type: integer
+          format: int64
+

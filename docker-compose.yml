@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  mancala-game:
+    image: mancala-game:1.0.0-RELEASE
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    environment:
+      - SPRING_DATA_MONGODB_HOST=mongodb
+      - SPRING_DATA_MONGODB_PORT=27017
+  mongodb:
+    image: mongo:5.0.1-focal
+    ports:
+      - "27017:27017"
+
