@@ -1,7 +1,7 @@
 package com.bol.mancala.service;
 
-import com.bol.mancala.constant.MancalaConstant;
 import com.bol.mancala.exception.GameIdNotFoundException;
+import com.bol.mancala.exception.InvalidSelectedPitException;
 import com.bol.mancala.exception.MancalaBaseException;
 import com.bol.mancala.model.MancalaBoard;
 import com.bol.mancala.model.MancalaPit;
@@ -16,8 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import static com.bol.mancala.constant.MancalaConstant.LEFT_MAIN_PIT_ID;
-import static com.bol.mancala.constant.MancalaConstant.RIGHT_MAIN_PIT_ID;
+import static com.bol.mancala.constant.MancalaConstant.*;
 
 @Service
 public class MancalaGameService {
@@ -41,8 +40,8 @@ public class MancalaGameService {
             Optional<MancalaBoard> mancalaBoardOpt = repository.findById(gameId);
             mancalaBoard = mancalaBoardOpt.orElseThrow(GameIdNotFoundException::new);
         }
-        if (!isValid(mancalaBoard, pitId)) {
-            return mancalaBoard;
+        if (!isValidPitIdToPlay(mancalaBoard, pitId)) {
+            throw new InvalidSelectedPitException();
         }
 
         int selectedPitStoneCount = mancalaBoard.getPit(pitId).getStoneCount();
@@ -52,7 +51,6 @@ public class MancalaGameService {
 
         IntStream.range(0, selectedPitStoneCount - 1)
                 .forEach(index -> sow(mancalaBoard, false));
-
         sow(mancalaBoard, true);
 
         int lastPitId = mancalaBoard.getCurrentPitIndex();
@@ -79,14 +77,14 @@ public class MancalaGameService {
         return mancalaBoard;
     }
 
-    // sows the stones on to the right
+    // Sows the stones
     private void sow(MancalaBoard mancalaBoard, boolean lastStone) {
-        int nextPitId = mancalaBoard.getCurrentPitIndex() % MancalaConstant.PIT_COUNT + 1;
+        int nextPitId = mancalaBoard.getCurrentPitIndex() % PIT_COUNT + 1;
         Integer playerId = mancalaBoard.getPlayerTurn();
 
         if ((nextPitId == RIGHT_MAIN_PIT_ID && playerId.equals(Player.PlayerA.getPlayerId())) ||
                 (nextPitId == LEFT_MAIN_PIT_ID && playerId.equals(Player.PlayerB.getPlayerId())))
-            nextPitId = nextPitId % MancalaConstant.PIT_COUNT + 1;
+            nextPitId = nextPitId % PIT_COUNT + 1;
 
         mancalaBoard.setCurrentPitIndex(nextPitId);
 
@@ -97,7 +95,7 @@ public class MancalaGameService {
         }
 
         // It's the last stone and we need to check the opposite player's pit status
-        MancalaPit oppositePit = mancalaBoard.getPit(MancalaConstant.PIT_COUNT - nextPitId);
+        MancalaPit oppositePit = mancalaBoard.getPit(PIT_COUNT - nextPitId);
 
         // Capturing Stones
         if (targetPit.isPitEmpty() && (
@@ -113,8 +111,8 @@ public class MancalaGameService {
         targetPit.incrementStones();
     }
 
-    private boolean isValid(MancalaBoard mancalaBoard, Integer pitId) {
-        if (pitId == RIGHT_MAIN_PIT_ID || pitId == LEFT_MAIN_PIT_ID) {
+    private boolean isValidPitIdToPlay(MancalaBoard mancalaBoard, Integer pitId) {
+        if (pitId == RIGHT_MAIN_PIT_ID || pitId == LEFT_MAIN_PIT_ID || pitId > PIT_COUNT || pitId <= 0) {
             return false;
         }
         if (mancalaBoard.getPlayerTurn().equals(Player.PlayerA.getPlayerId()) && pitId > LEFT_MAIN_PIT_ID ||
@@ -126,4 +124,5 @@ public class MancalaGameService {
         }
         return true;
     }
+
 }

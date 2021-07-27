@@ -2,6 +2,7 @@ package com.bol.mancala.exception.handler;
 
 import com.bol.mancala.dto.ResponseErrorDto;
 import com.bol.mancala.exception.GameIdNotFoundException;
+import com.bol.mancala.exception.InvalidSelectedPitException;
 import com.bol.mancala.model.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,17 @@ import java.time.LocalDateTime;
 public class MancalaExceptionHandler {
 
     @ExceptionHandler(GameIdNotFoundException.class)
-    public final ResponseEntity<ResponseErrorDto> GameIdNotFoundExceptionHandler(final GameIdNotFoundException ex,
+    public final ResponseEntity<ResponseErrorDto> gameIdNotFoundExceptionHandler(final GameIdNotFoundException ex,
                                                                                  final WebRequest request) {
         return new ResponseEntity<>(new ResponseErrorDto(ErrorCode.GAME_ID_NOT_FOUND.getCode(),
                 ErrorCode.GAME_ID_NOT_FOUND.getMessage(),
+                LocalDateTime.now()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(InvalidSelectedPitException.class)
+    public ResponseEntity<ResponseErrorDto> invalidSelectedPitExceptionHandler(Exception ex, WebRequest request) {
+        return new ResponseEntity<>(new ResponseErrorDto(ErrorCode.INVALID_SELECTED_PIT.getCode(),
+                ErrorCode.INVALID_SELECTED_PIT.getMessage(),
                 LocalDateTime.now()), HttpStatus.BAD_REQUEST);
     }
 
@@ -28,4 +36,5 @@ public class MancalaExceptionHandler {
                 ErrorCode.INTERNAL_SERVER_ERROR.getMessage(),
                 LocalDateTime.now()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

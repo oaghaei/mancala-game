@@ -1,24 +1,21 @@
 package com.bol.mancala.api;
 
-import com.bol.mancala.model.MancalaBoard;
-import com.bol.mancala.service.MancalaGameService;
+import com.bol.mancala.dto.MancalaBoardDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.UUID;
+import java.util.Arrays;
+import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -29,34 +26,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @DirtiesContext
 class MancalaGameApiTest {
 
+    private static final List<Integer> TEST_CASE =
+            Arrays.asList(2, 8, 1, 13, 6, 13, 12, 4, 13, 12, 2, 8, 6, 5, 13, 11, 6, 10, 5, 13, 12, 4);
+
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
 
     @Test
-    void testCreateNewGame() throws Exception {
-
-        mockMvc.perform(get("/create-new-game"))
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andReturn();
-    }
-
-    @Test
     void testPlayGame() throws Exception {
-        MvcResult creationResult = mockMvc.perform(get("/create-new-game"))
-                .andExpect(status().isCreated())
+        MvcResult result = mockMvc.perform(put("/play/1"))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-        MancalaBoard actualMancalaBoard = objectMapper.readValue(creationResult.getResponse().getContentAsString(), MancalaBoard.class);
-
-        MvcResult playResult = mockMvc.perform(put("/play/" + actualMancalaBoard.getGameId() + "/" + 1))
-                .andExpect(status().isOk())
-                .andReturn();
-        MvcResult playResult2 = mockMvc.perform(put("/play/" + actualMancalaBoard.getGameId() + "/" + 3))
-                .andExpect(status().isOk())
-                .andReturn();
-        System.out.println(objectMapper.readValue(playResult2.getResponse().getContentAsString(), MancalaBoard.class));
+        MancalaBoardDto actualMancalaBoardDto =
+                objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
+        for (Integer pitId : TEST_CASE) {
+            result = mockMvc.perform(put("/play/" + pitId + "/" + actualMancalaBoardDto.getGameId()))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
+        }
+        System.out.println(objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class));
     }
 }
