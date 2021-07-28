@@ -1,7 +1,6 @@
 package com.bol.mancala.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.util.Objects;
@@ -10,10 +9,8 @@ import java.util.Objects;
  * MancalaPit
  */
 public class MancalaPit {
-    @JsonProperty("id")
     private Integer id;
 
-    @JsonProperty("stoneCount")
     private Integer stoneCount;
 
     public MancalaPit id(Integer id) {

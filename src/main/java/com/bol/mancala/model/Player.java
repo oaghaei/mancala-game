@@ -1,16 +1,16 @@
 package com.bol.mancala.model;
 
 public enum Player {
-    PlayerA(1),
-    PlayerB(2);
+    PLAYER_LEFT(1),
+    PLAYER_RIGHT(2);
 
-    private Integer playerId;
+    private int playerId;
 
-    public Integer getPlayerId() {
+    public int getPlayerId() {
         return playerId;
     }
 
-    Player(Integer playerId) {
+    Player(int playerId) {
         this.playerId = playerId;
     }
 

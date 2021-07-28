@@ -1,12 +1,9 @@
 package com.bol.mancala.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,12 +20,10 @@ public class MancalaBoard {
     @Id
     private String gameId;
 
-    private Integer playerTurn;
+    private int playerTurn;
 
-    @Valid
     private List<MancalaPit> pits = null;
 
-    @JsonIgnore
     private int currentPitIndex;
 
     public int getCurrentPitIndex() {
@@ -46,9 +41,9 @@ public class MancalaBoard {
 
     public MancalaBoard withPlayerTurnBySelectedPitId(Integer pitId) {
         if (pitId < LEFT_MAIN_PIT_ID)
-            this.setPlayerTurn(Player.PlayerA.getPlayerId());
+            this.setPlayerTurn(Player.PLAYER_LEFT.getPlayerId());
         else
-            this.setPlayerTurn(Player.PlayerB.getPlayerId());
+            this.setPlayerTurn(Player.PLAYER_RIGHT.getPlayerId());
         return this;
     }
 
@@ -66,7 +61,7 @@ public class MancalaBoard {
         this.gameId = gameId;
     }
 
-    public MancalaBoard playerTurn(Integer playerTurn) {
+    public MancalaBoard playerTurn(int playerTurn) {
         this.playerTurn = playerTurn;
         return this;
     }
@@ -77,11 +72,11 @@ public class MancalaBoard {
      * @return playerTurn
      */
     @ApiModelProperty(value = "Player turn")
-    public Integer getPlayerTurn() {
+    public int getPlayerTurn() {
         return playerTurn;
     }
 
-    public void setPlayerTurn(Integer playerTurn) {
+    public void setPlayerTurn(int playerTurn) {
         this.playerTurn = playerTurn;
     }
 
@@ -128,7 +123,6 @@ public class MancalaBoard {
      * @return pits
      */
     @ApiModelProperty(value = "pits")
-    @Valid
     public List<MancalaPit> getPits() {
         return pits;
     }
