@@ -13,8 +13,14 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.Random;
+import java.util.stream.IntStream;
+
 import static com.bol.mancala.constant.MancalaBoardTestCase.TEST_CASE_WINNER_1;
 import static com.bol.mancala.constant.MancalaBoardTestCase.TEST_CASE_WINNER_2;
+import static com.bol.mancala.constant.MancalaConstant.LEFT_MAIN_PIT_ID;
+import static com.bol.mancala.constant.MancalaConstant.RIGHT_MAIN_PIT_ID;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,15 +58,57 @@ class MancalaGameApiTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andReturn();
-        MancalaBoardDto actualMancalaBoardDto =
+        MancalaBoardDto dto =
                 objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
         for (Integer pitId : TEST_CASE_WINNER_2) {
-            result = mockMvc.perform(put("/play/" + pitId + "/" + actualMancalaBoardDto.getGameId()))
+            result = mockMvc.perform(put("/play/" + pitId + "/" + dto.getGameId()))
                     .andExpect(status().isOk())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
         }
         System.out.println(objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class));
+        System.out.println(" ");
     }
 
+    @Test
+    void playRandomGame() throws Exception {
+        MancalaBoardDto dto = new MancalaBoardDto();
+        int firstPit = selectRandomPit(dto);
+        MvcResult result = mockMvc.perform(put("/play/" + selectRandomPit(dto)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andReturn();
+        dto = objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
+        System.out.println("/play/" + firstPit);
+        while (!isGameFinished(dto)){
+            int randomPit = selectRandomPit(dto);
+            System.out.println("/play/" + randomPit + "/" + dto.getGameId());
+            result = mockMvc.perform(put("/play/" + randomPit + "/" + dto.getGameId()))
+                    .andExpect(status().isOk())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
+            dto = objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
+        }
+        MancalaBoardDto finalDto = objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
+        assertEquals(72,
+                dto.getPits().get(LEFT_MAIN_PIT_ID -1).getStoneCount() + dto.getPits().get(RIGHT_MAIN_PIT_ID -1).getStoneCount());
+        assertTrue(IntStream.range(1, LEFT_MAIN_PIT_ID).allMatch(index -> finalDto.getPits().get(index - 1).getStoneCount() == 0));
+        assertTrue(IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).allMatch(index -> finalDto.getPits().get(index - 1).getStoneCount() == 0));
+    }
 
+    private boolean isGameFinished(final MancalaBoardDto dto){
+        return IntStream.range(1, LEFT_MAIN_PIT_ID).allMatch(index -> dto.getPits().get(index - 1).getStoneCount() == 0) &&
+                IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).allMatch(index -> dto.getPits().get(index - 1).getStoneCount() == 0);
+    }
+
+    private int selectRandomPit(final MancalaBoardDto dto) {
+        int pitId = 1;
+        if (dto.getPlayerTurn() == null)
+            pitId = 1 + new Random().nextInt(13);
+        else if (dto.getPlayerTurn() == 1)
+            pitId = 1 + new Random().nextInt(6);
+        else if (dto.getPlayerTurn() == 2)
+            pitId = 7 + new Random().nextInt(7);
+        if (pitId == 7 || (dto.getPits() != null && dto.getPits().get(pitId - 1).getStoneCount() == 0))
+            return selectRandomPit(dto);
+        return pitId;
+    }
 }
