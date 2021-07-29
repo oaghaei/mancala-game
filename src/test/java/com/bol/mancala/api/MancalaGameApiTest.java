@@ -7,20 +7,25 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.util.StreamUtils;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.stream.IntStream;
 
-import static com.bol.mancala.constant.MancalaBoardTestCase.TEST_CASE_WINNER_1;
-import static com.bol.mancala.constant.MancalaBoardTestCase.TEST_CASE_WINNER_2;
+import static com.bol.mancala.constant.MancalaBoardTestCase.*;
 import static com.bol.mancala.constant.MancalaConstant.LEFT_MAIN_PIT_ID;
 import static com.bol.mancala.constant.MancalaConstant.RIGHT_MAIN_PIT_ID;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -37,7 +42,7 @@ class MancalaGameApiTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void playGameToEnd() throws Exception {
+    void startGameToEndToWinPlayerLeft() throws Exception {
         MvcResult result = mockMvc.perform(put("/play/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -50,12 +55,13 @@ class MancalaGameApiTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
         }
         dto = objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
-        assertEquals(72,
-                dto.getPits().get(LEFT_MAIN_PIT_ID -1).getStoneCount() + dto.getPits().get(RIGHT_MAIN_PIT_ID -1).getStoneCount());
+        MancalaBoardDto expectedDto = objectMapper.readValue(readJsonCases(TEST_CASE_WINNER_1_EXPECTED_RESULT_JSON), MancalaBoardDto.class);
+        expectedDto.setGameId(dto.getGameId());
+        assertEquals(expectedDto, dto);
     }
 
     @Test
-    void playGameToEnd2() throws Exception {
+    void startGameToEndToWinPlayerRight() throws Exception {
         MvcResult result = mockMvc.perform(put("/play/8"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -68,8 +74,9 @@ class MancalaGameApiTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andReturn();
         }
         dto = objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
-        assertEquals(72,
-                dto.getPits().get(LEFT_MAIN_PIT_ID -1).getStoneCount() + dto.getPits().get(RIGHT_MAIN_PIT_ID -1).getStoneCount());
+        MancalaBoardDto expectedDto = objectMapper.readValue(readJsonCases(TEST_CASE_WINNER_2_EXPECTED_RESULT_JSON), MancalaBoardDto.class);
+        expectedDto.setGameId(dto.getGameId());
+        assertEquals(expectedDto, dto);
     }
 
     @Test
@@ -82,7 +89,7 @@ class MancalaGameApiTest {
                 .andReturn();
         dto = objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
         System.out.println("/play/" + firstPit);
-        while (!isGameFinished(dto)){
+        while (!isGameFinished(dto)) {
             int randomPit = selectRandomPit(dto);
             System.out.println("/play/" + randomPit + "/" + dto.getGameId());
             result = mockMvc.perform(put("/play/" + randomPit + "/" + dto.getGameId()))
@@ -92,12 +99,12 @@ class MancalaGameApiTest {
         }
         MancalaBoardDto finalDto = objectMapper.readValue(result.getResponse().getContentAsString(), MancalaBoardDto.class);
         assertEquals(72,
-                dto.getPits().get(LEFT_MAIN_PIT_ID -1).getStoneCount() + dto.getPits().get(RIGHT_MAIN_PIT_ID -1).getStoneCount());
+                dto.getPits().get(LEFT_MAIN_PIT_ID - 1).getStoneCount() + dto.getPits().get(RIGHT_MAIN_PIT_ID - 1).getStoneCount());
         assertTrue(IntStream.range(1, LEFT_MAIN_PIT_ID).allMatch(index -> finalDto.getPits().get(index - 1).getStoneCount() == 0));
         assertTrue(IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).allMatch(index -> finalDto.getPits().get(index - 1).getStoneCount() == 0));
     }
 
-    private boolean isGameFinished(final MancalaBoardDto dto){
+    private boolean isGameFinished(final MancalaBoardDto dto) {
         return IntStream.range(1, LEFT_MAIN_PIT_ID).allMatch(index -> dto.getPits().get(index - 1).getStoneCount() == 0) &&
                 IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).allMatch(index -> dto.getPits().get(index - 1).getStoneCount() == 0);
     }
@@ -113,5 +120,9 @@ class MancalaGameApiTest {
         if (pitId == 7 || (dto.getPits() != null && dto.getPits().get(pitId - 1).getStoneCount() == 0))
             return selectRandomPit(dto);
         return pitId;
+    }
+
+    private String readJsonCases(String filename) throws IOException {
+        return StreamUtils.copyToString(new ClassPathResource(filename).getInputStream(), Charset.defaultCharset());
     }
 }

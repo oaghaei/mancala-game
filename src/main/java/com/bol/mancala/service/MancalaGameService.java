@@ -14,8 +14,6 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.IntStream;
 
-import static com.bol.mancala.constant.MancalaConstant.*;
-
 @Service
 public class MancalaGameService {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -59,19 +57,12 @@ public class MancalaGameService {
                 });
 
         if (gamePlayService.isGameOver(mancalaBoard)) {
-            mancalaBoard.getPit(RIGHT_MAIN_PIT_ID).addStones(
-                    IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).map(index -> mancalaBoard.getPit(index).getStoneCount()).sum());
-            IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).forEach(index -> mancalaBoard.getPit(index).clear());
-            mancalaBoard.getPit(LEFT_MAIN_PIT_ID).addStones(
-                    IntStream.range(1, LEFT_MAIN_PIT_ID).map(index -> mancalaBoard.getPit(index).getStoneCount()).sum());
-            IntStream.range(1, LEFT_MAIN_PIT_ID).forEach(index -> mancalaBoard.getPit(index).clear());
+            gamePlayService.addAllStonesIntoTheirMainPit(mancalaBoard);
+            logger.info("Game [{}] ends at [{}]", mancalaBoard.getGameId(), LocalDateTime.now());
         }
         repository.save(mancalaBoard);
         return mancalaBoard;
     }
-
-
-
 
 
 }

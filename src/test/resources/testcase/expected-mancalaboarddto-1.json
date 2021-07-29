@@ -1,0 +1,61 @@
+{
+  "playerTurn": 2,
+  "pits": [
+    {
+      "id": 1,
+      "stoneCount": 0
+    },
+    {
+      "id": 2,
+      "stoneCount": 0
+    },
+    {
+      "id": 3,
+      "stoneCount": 0
+    },
+    {
+      "id": 4,
+      "stoneCount": 0
+    },
+    {
+      "id": 5,
+      "stoneCount": 0
+    },
+    {
+      "id": 6,
+      "stoneCount": 0
+    },
+    {
+      "id": 7,
+      "stoneCount": 45
+    },
+    {
+      "id": 8,
+      "stoneCount": 0
+    },
+    {
+      "id": 9,
+      "stoneCount": 0
+    },
+    {
+      "id": 10,
+      "stoneCount": 0
+    },
+    {
+      "id": 11,
+      "stoneCount": 0
+    },
+    {
+      "id": 12,
+      "stoneCount": 0
+    },
+    {
+      "id": 13,
+      "stoneCount": 0
+    },
+    {
+      "id": 14,
+      "stoneCount": 27
+    }
+  ]
+}

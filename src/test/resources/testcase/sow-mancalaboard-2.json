@@ -1,0 +1,63 @@
+{
+  "gameId": "eee27f23-034d-4ad4-bfdf-768f5125e880",
+  "playerTurn": 2,
+  "currentPitIndex": 9,
+  "pits": [
+    {
+      "id": 1,
+      "stoneCount": 2
+    },
+    {
+      "id": 2,
+      "stoneCount": 1
+    },
+    {
+      "id": 3,
+      "stoneCount": 0
+    },
+    {
+      "id": 4,
+      "stoneCount": 15
+    },
+    {
+      "id": 5,
+      "stoneCount": 12
+    },
+    {
+      "id": 6,
+      "stoneCount": 10
+    },
+    {
+      "id": 7,
+      "stoneCount": 5
+    },
+    {
+      "id": 8,
+      "stoneCount": 1
+    },
+    {
+      "id": 9,
+      "stoneCount": 5
+    },
+    {
+      "id": 10,
+      "stoneCount": 5
+    },
+    {
+      "id": 11,
+      "stoneCount": 4
+    },
+    {
+      "id": 12,
+      "stoneCount": 0
+    },
+    {
+      "id": 13,
+      "stoneCount": 5
+    },
+    {
+      "id": 14,
+      "stoneCount": 7
+    }
+  ]
+}

@@ -68,4 +68,17 @@ public class GamePlayService {
         return IntStream.range(1, LEFT_MAIN_PIT_ID).allMatch(index -> mancalaBoard.getPit(index).getStoneCount() == 0) ||
                 IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).allMatch(index -> mancalaBoard.getPit(index).getStoneCount() == 0);
     }
+
+    public void addAllStonesIntoTheirMainPit(MancalaBoard mancalaBoard) {
+        int rightPitsStoneCount = IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).map(index -> mancalaBoard.getPit(index).getStoneCount()).sum();
+        if (rightPitsStoneCount != 0) {
+            mancalaBoard.getPit(RIGHT_MAIN_PIT_ID).addStones(rightPitsStoneCount);
+            IntStream.range(LEFT_MAIN_PIT_ID + 1, RIGHT_MAIN_PIT_ID).forEach(index -> mancalaBoard.getPit(index).clear());
+        }
+        int leftPitsStoneCount = IntStream.range(1, LEFT_MAIN_PIT_ID).map(index -> mancalaBoard.getPit(index).getStoneCount()).sum();
+        if (leftPitsStoneCount != 0) {
+            mancalaBoard.getPit(LEFT_MAIN_PIT_ID).addStones(leftPitsStoneCount);
+            IntStream.range(1, LEFT_MAIN_PIT_ID).forEach(index -> mancalaBoard.getPit(index).clear());
+        }
+    }
 }

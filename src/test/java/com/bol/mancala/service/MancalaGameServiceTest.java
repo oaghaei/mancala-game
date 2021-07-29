@@ -34,11 +34,11 @@ class MancalaGameServiceTest {
 
     @Test
     void playGameWithGameId() throws MancalaBaseException {
-        MancalaBoard mancalaBoardA = new MancalaBoard().
+        MancalaBoard mancalaBoard = new MancalaBoard().
                 defaultPits().
                 gameId(UUID.randomUUID().toString()).
                 withPlayerTurnBySelectedPitId(1);
-        when(repositoryMock.findById(any())).thenReturn(Optional.of(mancalaBoardA));
+        when(repositoryMock.findById(any())).thenReturn(Optional.of(mancalaBoard));
         mancalaGameService.playGame(1, "1");
         verify(repositoryMock).findById(any());
     }
