@@ -2,6 +2,7 @@ package com.bol.mancala.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class MancalaBoard {
 
     private List<MancalaPit> pits = null;
 
+    @Transient
     private int currentPitIndex;
 
     public int getCurrentPitIndex() {

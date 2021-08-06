@@ -1,0 +1,12 @@
+info:
+    app:
+        version: '@project.version@'
+server:
+    address: 0.0.0.0
+    port: 8080
+spring:
+    data:
+        mongodb:
+            database: mancala_db
+            host: 0.0.0.0
+            port: 27017

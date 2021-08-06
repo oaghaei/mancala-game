@@ -1,4 +1,5 @@
 # Mancala Game
+<img src="src/main/resources/jacoco.svg" />
 
 Mancala Gameboard is a software that implements an ancient board game called Mancala or Kalah.
 It is a web application that runs the game of 6-stone Mancala.

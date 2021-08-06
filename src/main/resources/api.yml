@@ -16,18 +16,18 @@ paths:
       operationId: playGame
       parameters:
         - in: path
-          name: gameId
-          description: 'Id of the game to update'
-          required: true
-          schema:
-            type: string
-        - in: path
           name: pit
           description: 'pit number that user choose'
           required: true
           schema:
             type: integer
             format: int64
+        - in: path
+          name: gameId
+          description: 'Id of the game to update'
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: 'Game updated'
