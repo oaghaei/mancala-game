@@ -48,13 +48,7 @@ public class MancalaGameService {
         mancalaBoard.setCurrentPitIndex(pitId);
 
         IntStream.range(0, selectedPitStoneCount)
-                .forEach(index -> {
-                    if (index == selectedPitStoneCount - 1) {
-                        gamePlayService.sow(mancalaBoard, true);
-                    } else {
-                        gamePlayService.sow(mancalaBoard, false);
-                    }
-                });
+                .forEach(index -> gamePlayService.sow(mancalaBoard, index == selectedPitStoneCount - 1));
 
         if (gamePlayService.isGameOver(mancalaBoard)) {
             gamePlayService.addAllStonesIntoTheirMainPit(mancalaBoard);

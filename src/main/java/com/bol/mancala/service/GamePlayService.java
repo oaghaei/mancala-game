@@ -34,7 +34,7 @@ public class GamePlayService {
         } else {
             mancalaBoard.setPlayerTurn(Player.PLAYER_LEFT.getPlayerId());
         }
-        // It's the last stone and we need to capturing stones if it is possible!
+        // It's the last stone, and we need to capture stones if it is possible!
         if (currentPit.isPitEmpty() && (
                 (playerId == Player.PLAYER_LEFT.getPlayerId() && currentPit.getId() < LEFT_MAIN_PIT_ID) ||
                         (playerId == Player.PLAYER_RIGHT.getPlayerId() && currentPit.getId() > LEFT_MAIN_PIT_ID))) {

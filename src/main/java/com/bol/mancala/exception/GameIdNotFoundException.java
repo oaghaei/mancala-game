@@ -1,5 +1,9 @@
 package com.bol.mancala.exception;
 
-public class GameIdNotFoundException extends MancalaBaseException{
+import com.bol.mancala.model.ErrorCode;
 
+public class GameIdNotFoundException extends MancalaBaseException{
+    public GameIdNotFoundException() {
+        super(ErrorCode.GAME_ID_NOT_FOUND);
+    }
 }

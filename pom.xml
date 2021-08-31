@@ -113,12 +113,12 @@
                 <executions>
                     <execution>
                         <id>generate-jacoco-badge</id>
-                        <phase>verify</phase>
+                        <phase>post-site</phase>
                         <goals>
                             <goal>badge</goal>
                         </goals>
                         <configuration>
-                            <passing>70</passing>
+                            <passing>60</passing>
                             <badgeFile>${project.basedir}/src/main/resources/jacoco.svg</badgeFile>
                         </configuration>
                     </execution>

@@ -6,10 +6,8 @@ import org.springframework.boot.ExitCodeGenerator;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com", "com.bol.mancala.api", "com.bol.mancala.config"})
 public class MancalaApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
@@ -17,7 +15,7 @@ public class MancalaApplication implements CommandLineRunner {
     }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (args.length > 0 && args[0].equals("exitcode")) {
             throw new ExitException();
         }
